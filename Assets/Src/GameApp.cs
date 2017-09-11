@@ -11,6 +11,9 @@ public class GameApp : MonoBehaviour
 
 	void Start()
 	{
+		power = 1;
+		speed = 0.0f;
+
 		GameObject camera = Resources.Load<GameObject>("Prefab/MainCamera");
 		camera = GameObject.Instantiate(camera);
 		mainCamera = camera.GetComponent<Camera>();
@@ -82,6 +85,11 @@ public class GameApp : MonoBehaviour
 				GameObject.Destroy(stone);
 			}
 		}
+		Vector3 playerPos = player.transform.position;
+		playerPos.y += (speed * Time.deltaTime);
+		player.transform.position = playerPos;
+
+		speed += ((float)power * Time.deltaTime);
 	}
 
 	public static float screenWidth = 0.0f;
@@ -91,6 +99,8 @@ public class GameApp : MonoBehaviour
 	public static GameObject player = null;
 
 	public static bool gameLoading = true;
+	public static int power = 1;
+	public static float speed = 0.0f;
 
 	public static float stoneWidth = 5.0f;
 	GameObject upStone1 = null;
