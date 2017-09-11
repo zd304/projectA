@@ -37,6 +37,20 @@ public class GameApp : MonoBehaviour
 		downStone1 = Resources.Load<GameObject>("Prefab/down_stone1");
 		downStone2 = Resources.Load<GameObject>("Prefab/down_stone2");
 
+		GameObject borderObstacle = new GameObject("upObstacle");
+		borderObstacle.layer = Global.layerObstacle;
+		borderObstacle.transform.position = new Vector3(0.0f, screenHeight + 1.5f, 1.0f);
+		BoxCollider2D c = borderObstacle.AddComponent<BoxCollider2D>();
+		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
+		c.isTrigger = true;
+
+		borderObstacle = new GameObject("downObstacle");
+		borderObstacle.layer = Global.layerObstacle;
+		borderObstacle.transform.position = new Vector3(0.0f, -screenHeight - 1.5f, 1.0f);
+		c = borderObstacle.AddComponent<BoxCollider2D>();
+		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
+		c.isTrigger = true;
+
 		gameLoading = false;
 	}
 
