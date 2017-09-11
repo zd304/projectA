@@ -6,6 +6,7 @@ public class UIMain : MonoBehaviour
 {
 	void Awake()
 	{
+		instance = this;
 		UpdatePower();
 	}
 
@@ -81,6 +82,20 @@ public class UIMain : MonoBehaviour
 		}
 	}
 
+	static UIMain mInstance = null;
+	public static UIMain instance
+	{
+		private set
+		{
+			mInstance = value;
+		}
+		get
+		{
+			return mInstance;
+		}
+	}
+
 	public Image[] southPowers;
 	public Image[] northPowers;
+	public GameObject gameoverGO;
 }

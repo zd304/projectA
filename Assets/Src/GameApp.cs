@@ -13,6 +13,7 @@ public class GameApp : MonoBehaviour
 	{
 		power = 1;
 		speed = 0.0f;
+		gameOver = false;
 
 		GameObject camera = Resources.Load<GameObject>("Prefab/MainCamera");
 		camera = GameObject.Instantiate(camera);
@@ -25,6 +26,7 @@ public class GameApp : MonoBehaviour
 		uiMain = GameObject.Instantiate(uiMain);
 		Canvas canvas = uiMain.GetComponent<Canvas>();
 		canvas.worldCamera = mainCamera;
+		UIMain.instance.gameoverGO.SetActive(false);
 
 		GameObject spaceShip = Resources.Load<GameObject>("Prefab/spaceship");
 		player = GameObject.Instantiate(spaceShip);
@@ -40,6 +42,7 @@ public class GameApp : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		if (gameOver) return;
 		if (tick == 50)
 		{
 			GameObject go = GameObject.Instantiate(upStone1);
@@ -69,6 +72,7 @@ public class GameApp : MonoBehaviour
 
 	void Update()
 	{
+		if (gameOver) return;
 		for (int i = stones.Count - 1; i >= 0; --i)
 		{
 			GameObject stone = stones[i];
@@ -101,6 +105,7 @@ public class GameApp : MonoBehaviour
 	public static bool gameLoading = true;
 	public static int power = 1;
 	public static float speed = 0.0f;
+	public static bool gameOver = false;
 
 	public static float stoneWidth = 5.0f;
 	GameObject upStone1 = null;
