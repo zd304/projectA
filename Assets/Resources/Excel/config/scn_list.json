@@ -1,0 +1,9 @@
+{
+  "field": [
+    {"name": "id", "type": "int"},
+    {"name": "name", "type": "int"}
+  ],
+  "files": [
+    "scn/scn_list"
+  ]
+}

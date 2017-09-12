@@ -51,6 +51,8 @@ public class GameApp : MonoBehaviour
 		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
 		c.isTrigger = true;
 
+		ExcelLoader.Init();
+
 		gameLoading = false;
 	}
 

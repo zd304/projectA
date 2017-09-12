@@ -45,10 +45,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Src\ExcelDefine.cs" />
+     <Compile Include="Assets\Src\ExcelLoader.cs" />
      <Compile Include="Assets\Src\GameApp.cs" />
      <Compile Include="Assets\Src\Global.cs" />
+     <Compile Include="Assets\Src\LitJson\IJsonWrapper.cs" />
+     <Compile Include="Assets\Src\LitJson\JsonData.cs" />
+     <Compile Include="Assets\Src\LitJson\JsonException.cs" />
+     <Compile Include="Assets\Src\LitJson\JsonMapper.cs" />
+     <Compile Include="Assets\Src\LitJson\JsonMockWrapper.cs" />
+     <Compile Include="Assets\Src\LitJson\JsonReader.cs" />
+     <Compile Include="Assets\Src\LitJson\JsonWriter.cs" />
+     <Compile Include="Assets\Src\LitJson\Lexer.cs" />
+     <Compile Include="Assets\Src\LitJson\ParserToken.cs" />
      <Compile Include="Assets\Src\Player.cs" />
      <Compile Include="Assets\Src\UIMain.cs" />
+     <None Include="Assets\Resources\Excel\scn\scn_list.txt" />
+     <None Include="Assets\Resources\Excel\excel_index.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
