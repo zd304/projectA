@@ -12,10 +12,6 @@ public class GameApp : MonoBehaviour
 
 	void Start()
 	{
-		power = 1;
-		speed = 0.0f;
-		gameOver = false;
-
 		GameObject camera = Resources.Load<GameObject>("Prefab/MainCamera");
 		camera = GameObject.Instantiate(camera);
 		mainCamera = camera.GetComponent<Camera>();
@@ -23,35 +19,7 @@ public class GameApp : MonoBehaviour
 		screenHeight = mainCamera.orthographicSize;
 		screenWidth = mainCamera.aspect * screenHeight;
 
-		GameObject uiMain = Resources.Load<GameObject>("GUI/ui_main");
-		uiMain = GameObject.Instantiate(uiMain);
-		Canvas canvas = uiMain.GetComponent<Canvas>();
-		canvas.worldCamera = mainCamera;
-		UIMain.instance.gameoverGO.SetActive(false);
-
-		GameObject spaceShip = Resources.Load<GameObject>("Prefab/spaceship");
-		player = GameObject.Instantiate(spaceShip);
-		player.transform.position = new Vector3(-(screenWidth - 2.0f), 0.0f, 1.0f);
-
-		GameObject borderObstacle = new GameObject("upObstacle");
-		borderObstacle.layer = Global.layerObstacle;
-		borderObstacle.transform.position = new Vector3(0.0f, screenHeight + 1.5f, 1.0f);
-		BoxCollider2D c = borderObstacle.AddComponent<BoxCollider2D>();
-		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
-		c.isTrigger = true;
-
-		borderObstacle = new GameObject("downObstacle");
-		borderObstacle.layer = Global.layerObstacle;
-		borderObstacle.transform.position = new Vector3(0.0f, -screenHeight - 1.5f, 1.0f);
-		c = borderObstacle.AddComponent<BoxCollider2D>();
-		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
-		c.isTrigger = true;
-
-		excel_scn_list scn1 = excel_scn_list.Find(1);
-		scnRoot = Resources.Load<GameObject>("Scene/" + scn1.name + "/SceneRoot");
-		scnRoot = GameObject.Instantiate(scnRoot);
-
-		gameLoading = false;
+		LoadScene(1);
 	}
 
 	void FixedUpdate()
@@ -74,11 +42,68 @@ public class GameApp : MonoBehaviour
 		scnRoot.transform.position = scenePos;
 	}
 
+	public static void LoadScene(int scnID)
+	{
+		gameLoading = true;
+
+		power = 1;
+		speed = 0.0f;
+		gameOver = false;
+		tick = 0;
+
+		// Load UI
+		uiRoot = Resources.Load<GameObject>("GUI/ui_main");
+		uiRoot = GameObject.Instantiate(uiRoot);
+		Canvas canvas = uiRoot.GetComponent<Canvas>();
+		canvas.worldCamera = mainCamera;
+		UIMain.instance.gameoverGO.SetActive(false);
+
+		// Load Player
+		GameObject spaceShip = Resources.Load<GameObject>("Prefab/spaceship");
+		player = GameObject.Instantiate(spaceShip);
+		player.transform.position = new Vector3(-(screenWidth - 2.0f), 0.0f, 1.0f);
+
+		// Load Fixed Obstacle
+		upBorderObstacle = new GameObject("upObstacle");
+		upBorderObstacle.layer = Global.layerObstacle;
+		upBorderObstacle.transform.position = new Vector3(0.0f, screenHeight + 1.5f, 1.0f);
+		BoxCollider2D c = upBorderObstacle.AddComponent<BoxCollider2D>();
+		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
+		c.isTrigger = true;
+
+		downBorderObstacle = new GameObject("downObstacle");
+		downBorderObstacle.layer = Global.layerObstacle;
+		downBorderObstacle.transform.position = new Vector3(0.0f, -screenHeight - 1.5f, 1.0f);
+		c = downBorderObstacle.AddComponent<BoxCollider2D>();
+		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
+		c.isTrigger = true;
+
+		// Load Scene
+		excel_scn_list scn1 = excel_scn_list.Find(1);
+		scnRoot = Resources.Load<GameObject>("Scene/" + scn1.name + "/SceneRoot");
+		scnRoot = GameObject.Instantiate(scnRoot);
+
+		gameLoading = false;
+	}
+
+	public static void UnloadScene()
+	{
+		GameObject.Destroy(uiRoot);
+		GameObject.Destroy(player);
+		GameObject.Destroy(scnRoot);
+		GameObject.Destroy(upBorderObstacle);
+		GameObject.Destroy(downBorderObstacle);
+	}
+
 	public static float screenWidth = 0.0f;
 	public static float screenHeight = 0.0f;
 
 	public static Camera mainCamera = null;
 	public static GameObject player = null;
+	public static GameObject scnRoot = null;
+	public static GameObject upBorderObstacle = null;
+	public static GameObject downBorderObstacle = null;
+	public static GameObject uiRoot = null;
 
 	public static bool gameLoading = true;
 	public static int power = 1;
@@ -86,7 +111,6 @@ public class GameApp : MonoBehaviour
 	public static bool gameOver = false;
 
 	public static float stoneWidth = 5.0f;
-	GameObject scnRoot = null;
 
-	int tick = 0;
+	static int tick = 0;
 }

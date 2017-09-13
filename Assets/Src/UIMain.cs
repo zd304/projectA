@@ -8,6 +8,7 @@ public class UIMain : MonoBehaviour
 	{
 		instance = this;
 		UpdatePower();
+		gameoverGO.SetActive(false);
 	}
 
 	void Start()
@@ -25,6 +26,12 @@ public class UIMain : MonoBehaviour
 	{
 		--GameApp.power;
 		UpdatePower();
+	}
+
+	public void ClickGameOver()
+	{
+		GameApp.UnloadScene();
+		GameApp.LoadScene(1);
 	}
 
 	public void UpdatePower()
