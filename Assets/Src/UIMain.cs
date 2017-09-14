@@ -13,7 +13,34 @@ public class UIMain : MonoBehaviour
 
 	void Start()
 	{
-		
+		float btnSize = (float)Screen.height * 0.167f;
+
+		Vector2 offsetMin, offsetMax;
+		offsetMin = northBtn.rectTransform.offsetMin;
+		offsetMax = northBtn.rectTransform.offsetMax;
+		offsetMin.y = -btnSize;
+		offsetMax.x = btnSize;
+		northBtn.rectTransform.offsetMin = offsetMin;
+		northBtn.rectTransform.offsetMax = offsetMax;
+
+		offsetMax = southBtn.rectTransform.offsetMax;
+		offsetMax.x = btnSize;
+		offsetMax.y = btnSize;
+		southBtn.rectTransform.offsetMax = offsetMax;
+
+		float powerSize = (float)Screen.height * 0.08f;
+		for (int i = 0; i < northPowers.Length; ++i)
+		{
+			Image poweImage = northPowers[i];
+			poweImage.rectTransform.offsetMin = new Vector2(powerSize * i, -powerSize);
+			poweImage.rectTransform.offsetMax = new Vector2(powerSize * (i + 1), 0.0f);
+		}
+		for (int i = 0; i < southPowers.Length; ++i)
+		{
+			Image poweImage = southPowers[i];
+			poweImage.rectTransform.offsetMin = new Vector2(powerSize * i, 0.0f);
+			poweImage.rectTransform.offsetMax = new Vector2(powerSize * (i + 1), powerSize);
+		}
 	}
 
 	public void ClickNorthBtn()
@@ -104,5 +131,7 @@ public class UIMain : MonoBehaviour
 
 	public Image[] southPowers;
 	public Image[] northPowers;
+	public Image northBtn;
+	public Image southBtn;
 	public GameObject gameoverGO;
 }
