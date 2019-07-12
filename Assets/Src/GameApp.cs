@@ -34,9 +34,12 @@ public class GameApp : MonoBehaviour
 
 		player.RenderTick();
 
-		Vector3 scenePos = scnRoot.transform.position;
-		scenePos.x -= (Time.deltaTime * 2);
-		scnRoot.transform.position = scenePos;
+        if (scnRoot)
+        {
+            Vector3 scenePos = scnRoot.transform.position;
+            scenePos.x -= (Time.deltaTime * 2);
+            scnRoot.transform.position = scenePos;
+        }
 
 		TouchUpdate();
 
