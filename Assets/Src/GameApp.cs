@@ -36,9 +36,17 @@ public class GameApp : MonoBehaviour
 
         if (scnRoot)
         {
-            Vector3 scenePos = scnRoot.transform.position;
-            scenePos.x -= (Time.deltaTime * 2);
-            scnRoot.transform.position = scenePos;
+            //Vector3 scenePos = scnRoot.transform.position;
+            //scenePos.x -= (Time.deltaTime * 2);
+            //scnRoot.transform.position = scenePos;
+
+            Vector3 p = player.transform.position;
+            p.x += (Time.deltaTime * 2);
+            player.transform.position = p;
+
+            p = mainCamera.transform.position;
+            p.x += (Time.deltaTime * 2);
+            mainCamera.transform.position = p;
         }
 
 		TouchUpdate();
@@ -80,13 +88,13 @@ public class GameApp : MonoBehaviour
 		float y = mBeginPos.y / Screen.height;
 		x = x * screenWidth * 2.0f - screenWidth;
 		y = y * screenHeight * 2.0f - screenHeight;
-		line.SetPosition(0, new Vector3(x, y, 1.0f));
+		line.SetPosition(0, new Vector3(x + mainCamera.transform.position.x, y, 1.0f));
 
 		x = nowPos.x / Screen.width;
 		y = nowPos.y / Screen.height;
 		x = x * screenWidth * 2.0f - screenWidth;
 		y = y * screenHeight * 2.0f - screenHeight;
-		line.SetPosition(1, new Vector3(x, y, 1.0f));
+		line.SetPosition(1, new Vector3(x + mainCamera.transform.position.x, y, 1.0f));
 	}
 
 	void MouseUpdate()
@@ -121,13 +129,13 @@ public class GameApp : MonoBehaviour
 		float y = mBeginPos.y / Screen.height;
 		x = x * screenWidth * 2.0f - screenWidth;
 		y = y * screenHeight * 2.0f - screenHeight;
-		line.SetPosition(0, new Vector3(x, y, 1.0f));
+		line.SetPosition(0, new Vector3(x + mainCamera.transform.position.x, y, 1.0f));
 
 		x = nowPos.x / Screen.width;
 		y = nowPos.y / Screen.height;
 		x = x * screenWidth * 2.0f - screenWidth;
 		y = y * screenHeight * 2.0f - screenHeight;
-		line.SetPosition(1, new Vector3(x, y, 1.0f));
+		line.SetPosition(1, new Vector3(x + mainCamera.transform.position.x, y, 1.0f));
 	}
 
 	public static void LoadScene(int scnID)
@@ -145,9 +153,10 @@ public class GameApp : MonoBehaviour
 		canvas.worldCamera = mainCamera;
 		UIMain.instance.gameoverGO.SetActive(false);
 		line = mainCamera.transform.FindChild("Line").GetComponent<LineRenderer>();
+        mainCamera.transform.position = Vector3.zero;
 
-		// Load Player
-		GameObject spaceShip = Resources.Load<GameObject>("Prefab/spaceship");
+        // Load Player
+        GameObject spaceShip = Resources.Load<GameObject>("Prefab/spaceship");
 		spaceShip = GameObject.Instantiate(spaceShip);
 		player = spaceShip.GetComponent<Player>();
 		player.transform.position = new Vector3(-(screenWidth - 2.0f), 0.0f, 1.0f);
