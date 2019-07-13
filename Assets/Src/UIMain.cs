@@ -45,13 +45,21 @@ public class UIMain : MonoBehaviour
 
 	public void ClickNorthBtn()
 	{
+        if (GameApp.power < 0)
+        {
+            GameApp.power = 0;
+        }
 		++GameApp.power;
 		UpdatePower();
 	}
 
 	public void ClickSouthBtn()
 	{
-		--GameApp.power;
+        if (GameApp.power > 0)
+        {
+            GameApp.power = 0;
+        }
+        --GameApp.power;
 		UpdatePower();
 	}
 
