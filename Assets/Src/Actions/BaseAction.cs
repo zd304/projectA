@@ -7,7 +7,7 @@ public class BaseAction : MonoBehaviour
     public int actionID = 0;
     public int nextActionID = 0;
     
-    [NonSerialized]
+    //[NonSerialized]
     public ActionFlow flow = null;    
 
     public ActionContext context
