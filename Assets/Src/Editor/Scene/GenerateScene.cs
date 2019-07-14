@@ -35,6 +35,8 @@ public class GenerateScene
         GenerateOrnaments(sceneRoot.transform, config);
         GenerateObstcle(sceneRoot.transform, config);
 
+        config.Sort();
+
         string configPath = string.Format("{0}/{1}.asset", sceneDirectory, "config");
         if (File.Exists(configPath))
         {
@@ -82,8 +84,8 @@ public class GenerateScene
             {
                 SpriteRenderer r = renderers[j];
 
-                min = Vector3.Min(min, r.bounds.min + r.bounds.center + r.transform.position);
-                max = Vector3.Max(max, r.bounds.max + r.bounds.center + r.transform.position);
+                min = Vector3.Min(min, r.bounds.min);
+                max = Vector3.Max(max, r.bounds.max);
             }
 
             string objDir = sceneDirectory + "/" + folderName;

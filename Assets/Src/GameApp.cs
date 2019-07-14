@@ -10,7 +10,24 @@ public class GameApp : MonoBehaviour
 		ExcelLoader.Init();
 	}
 
-	void Start()
+    private void OnDrawGizmos()
+    {
+        if (!mainCamera)
+            return;
+
+        Vector3 v1 = new Vector3(min.x, min.y, 0.0f) + mainCamera.transform.position;
+        Vector3 v2 = new Vector3(max.x, min.y, 0.0f) + mainCamera.transform.position;
+        Vector3 v3 = new Vector3(max.x, max.y, 0.0f) + mainCamera.transform.position;
+        Vector3 v4 = new Vector3(min.x, max.y, 0.0f) + mainCamera.transform.position;
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(v1, v2);
+        Gizmos.DrawLine(v2, v3);
+        Gizmos.DrawLine(v3, v4);
+        Gizmos.DrawLine(v4, v1);
+    }
+
+    void Start()
 	{
 		GameObject camera = Resources.Load<GameObject>("Prefab/MainCamera");
 		camera = GameObject.Instantiate(camera);
@@ -29,8 +46,11 @@ public class GameApp : MonoBehaviour
             screenWidth = Mathf.Min(screenHeight, screenWidth);
             screenHeight = Mathf.Max(screenHeight, screenWidth);
         }
+        
+        min = new Vector2(-screenWidth, -screenHeight);
+        max = new Vector2(screenWidth + screenWidth * 0.3f, screenHeight);
 
-		LoadScene(1);
+        LoadScene(1);
 	}
 
 	void FixedUpdate()
@@ -60,7 +80,10 @@ public class GameApp : MonoBehaviour
             mainCamera.transform.position = p;
         }
 
-		TouchUpdate();
+        Vector2 mp = mainCamera.transform.position;
+        sceneManger.UpdateLoading(min + mp, max + mp, ornamentRoot, obstacleRoot);
+        
+        TouchUpdate();
 
 		MouseUpdate ();
 	}
@@ -189,12 +212,42 @@ public class GameApp : MonoBehaviour
 		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
 		c.isTrigger = true;
 
-		// Load Scene
-		excel_scn_list scn1 = excel_scn_list.Find(1);
-		scnRoot = Resources.Load<GameObject>("Scene/" + scn1.name + "/SceneRoot");
-		scnRoot = GameObject.Instantiate(scnRoot);
+        // Load Scene
+        excel_scn_list scn1 = excel_scn_list.Find(1);
+        //scnRoot = Resources.Load<GameObject>("Scene/" + scn1.name + "/SceneRoot");
+        //scnRoot = GameObject.Instantiate(scnRoot);
 
-		gameLoading = false;
+        if (scnRoot == null)
+        {
+            scnRoot = new GameObject("SceneRoot");
+            scnRoot.transform.position = Vector3.zero;
+            scnRoot.transform.rotation = Quaternion.identity;
+            scnRoot.transform.localScale = Vector3.one;
+        }
+
+        if (ornamentRoot == null)
+        {
+            GameObject ornamentGO = new GameObject("Ornaments");
+            ornamentRoot = ornamentGO.transform;
+            ornamentRoot.parent = scnRoot.transform;
+            ornamentRoot.localPosition = Vector3.zero;
+            ornamentRoot.localRotation = Quaternion.identity;
+            ornamentRoot.localScale = Vector3.one;
+        }
+        
+        if (obstacleRoot == null)
+        {
+            GameObject obstacleGO = new GameObject("Obstacles");
+            obstacleRoot = obstacleGO.transform;
+            obstacleRoot.parent = scnRoot.transform;
+            obstacleRoot.localPosition = Vector3.zero;
+            obstacleRoot.localRotation = Quaternion.identity;
+            obstacleRoot.localScale = Vector3.one;
+        }
+
+        sceneManger.Load(scn1.name);
+
+        gameLoading = false;
 	}
 
 	public static void UnloadScene()
@@ -204,7 +257,12 @@ public class GameApp : MonoBehaviour
 		GameObject.Destroy(scnRoot);
 		GameObject.Destroy(upBorderObstacle);
 		GameObject.Destroy(downBorderObstacle);
-	}
+
+        scnRoot = null;
+        ornamentRoot = null;
+        obstacleRoot = null;
+        sceneManger.Unload();
+    }
 
 	public static float screenWidth = 0.0f;
 	public static float screenHeight = 0.0f;
@@ -216,6 +274,12 @@ public class GameApp : MonoBehaviour
 	public static GameObject downBorderObstacle = null;
 	public static GameObject uiRoot = null;
 
+    public static Transform ornamentRoot = null;
+    public static Transform obstacleRoot = null;
+
+    public static Vector2 min = Vector3.zero;
+    public static Vector2 max = Vector3.zero;
+
 	public static bool gameLoading = true;
 	public static int power = 1;
 	public static bool gameOver = false;
@@ -224,6 +288,7 @@ public class GameApp : MonoBehaviour
 
 	static int tick = 0;
 	static LineRenderer line = null;
+    static SceneManger sceneManger = new SceneManger();
 
 	public bool touchFlag = false;
 	public Vector3 mBeginPos = Vector3.zero;

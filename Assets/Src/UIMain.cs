@@ -124,18 +124,6 @@ public class UIMain : MonoBehaviour
 		}
 	}
 
-    public void OnGUI()
-    {
-        if (northBtn.material)
-        {
-            GUI.Box(new Rect(10, 10, 200, 50), "找到材质了" + northBtn.material.name);
-            if (northBtn.material.shader)
-            {
-                GUI.Box(new Rect(10, 110, 200, 50), "找到Shader了" + northBtn.material.shader.name);
-            }
-        }
-    }
-
     static UIMain mInstance = null;
 	public static UIMain instance
 	{
