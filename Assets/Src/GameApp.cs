@@ -19,6 +19,17 @@ public class GameApp : MonoBehaviour
 		screenHeight = mainCamera.orthographicSize;
 		screenWidth = mainCamera.aspect * screenHeight;
 
+        if (Screen.width > Screen.height)
+        {
+            screenWidth = Mathf.Max(screenHeight, screenWidth);
+            screenHeight = Mathf.Min(screenHeight, screenWidth);
+        }
+        else
+        {
+            screenWidth = Mathf.Min(screenHeight, screenWidth);
+            screenHeight = Mathf.Max(screenHeight, screenWidth);
+        }
+
 		LoadScene(1);
 	}
 
@@ -152,7 +163,7 @@ public class GameApp : MonoBehaviour
 		Canvas canvas = uiRoot.GetComponent<Canvas>();
 		canvas.worldCamera = mainCamera;
 		UIMain.instance.gameoverGO.SetActive(false);
-		line = mainCamera.transform.FindChild("Line").GetComponent<LineRenderer>();
+		line = mainCamera.transform.Find("Line").GetComponent<LineRenderer>();
         mainCamera.transform.position = Vector3.zero;
 
         // Load Player
