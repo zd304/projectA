@@ -60,6 +60,14 @@ public class ActionFlow : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (CurrentAction)
+        {
+            CurrentAction.OnFixedUpdate();
+        }
+    }
+
     public BaseAction CurrentAction
     {
         set;

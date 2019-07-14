@@ -161,17 +161,19 @@ public class GameApp : MonoBehaviour
 		player = spaceShip.GetComponent<Player>();
 		player.transform.position = new Vector3(-(screenWidth - 2.0f), 0.0f, 1.0f);
 
-		// Load Fixed Obstacle
-		upBorderObstacle = new GameObject("upObstacle");
+        // Load Fixed Obstacle
+        upBorderObstacle = new GameObject("upObstacle");
 		upBorderObstacle.layer = Global.layerObstacle;
-		upBorderObstacle.transform.position = new Vector3(0.0f, screenHeight + 1.5f, 1.0f);
+        upBorderObstacle.transform.parent = mainCamera.transform;
+        upBorderObstacle.transform.position = new Vector3(0.0f, screenHeight + 1.5f, 1.0f);
 		BoxCollider2D c = upBorderObstacle.AddComponent<BoxCollider2D>();
 		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
 		c.isTrigger = true;
 
 		downBorderObstacle = new GameObject("downObstacle");
 		downBorderObstacle.layer = Global.layerObstacle;
-		downBorderObstacle.transform.position = new Vector3(0.0f, -screenHeight - 1.5f, 1.0f);
+        downBorderObstacle.transform.parent = mainCamera.transform;
+        downBorderObstacle.transform.position = new Vector3(0.0f, -screenHeight - 1.5f, 1.0f);
 		c = downBorderObstacle.AddComponent<BoxCollider2D>();
 		c.size = new Vector2(screenWidth * 2.0f, 3.0f);
 		c.isTrigger = true;

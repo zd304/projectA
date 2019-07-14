@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class BaseAction : MonoBehaviour
 {
+    [ReadOnly]
     public int actionID = 0;
     public int nextActionID = 0;
-
-    public ActionFlow flow = null;
+    
+    [NonSerialized]
+    public ActionFlow flow = null;    
 
     public ActionContext context
     {
@@ -25,6 +27,8 @@ public class BaseAction : MonoBehaviour
     public virtual void OnExit() { }
 
     public virtual void OnUpdate() { }
+
+    public virtual void OnFixedUpdate() { }
 
     public virtual void Continue()
     {

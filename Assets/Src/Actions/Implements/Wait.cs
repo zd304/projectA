@@ -9,7 +9,7 @@ public class Wait : BaseAction
         waitTime = Random.Range(minTime, maxTime);
     }
 
-    public override void OnUpdate()
+    public override void OnFixedUpdate()
     {
         float life = Time.realtimeSinceStartup - startTime;
         if (life >= waitTime)
