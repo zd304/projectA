@@ -34,6 +34,7 @@ public class GenerateScene
 
         GenerateOrnaments(sceneRoot.transform, config);
         GenerateObstcle(sceneRoot.transform, config);
+        GenerateRepeat(sceneRoot.transform, config);
 
         config.Sort();
 
@@ -50,24 +51,35 @@ public class GenerateScene
 
     static void GenerateObstcle(Transform sceneRoot, SceneConfig config)
     {
-        Transform ornamentRoot = sceneRoot.Find("Obstacle");
-        if (!ornamentRoot)
+        Transform root = sceneRoot.Find("Obstacle");
+        if (!root)
         {
             return;
         }
 
-        GenerateObject(ornamentRoot, "Obstacles", config.obstacles);
+        GenerateObject(root, "Obstacles", config.obstacles);
     }
 
     static void GenerateOrnaments(Transform sceneRoot, SceneConfig config)
     {
-        Transform ornamentRoot = sceneRoot.Find("Ornament");
-        if (!ornamentRoot)
+        Transform root = sceneRoot.Find("Ornament");
+        if (!root)
         {
             return;
         }
 
-        GenerateObject(ornamentRoot, "Ornaments", config.ornaments);
+        GenerateObject(root, "Ornaments", config.ornaments);
+    }
+
+    static void GenerateRepeat(Transform sceneRoot, SceneConfig config)
+    {
+        Transform root = sceneRoot.Find("Repeat");
+        if (!root)
+        {
+            return;
+        }
+
+        GenerateObject(root, "Repeat", config.repeats);
     }
 
     static void GenerateObject(Transform root, string folderName, List<SpriteObject> list)
@@ -99,14 +111,41 @@ public class GenerateScene
             {
                 File.Delete(objPath);
             }
+            
+            GameObject clone = GameObject.Instantiate(obj.gameObject);
+            if (clone == null)
+            {
+                continue;
+            }
+            SceneObj scnObj = clone.GetComponent<SceneObj>();
 
             SpriteObject spriteObject = new SpriteObject();
             spriteObject.path = objPath;
             spriteObject.min = new Vector2(min.x, min.y);
             spriteObject.max = new Vector2(max.x, max.y);
+            if (scnObj != null)
+            {
+                spriteObject.variables = scnObj.variables.ToArray();
+                if (Application.isPlaying)
+                {
+                    GameObject.Destroy(scnObj);
+                }
+                else
+                {
+                    GameObject.DestroyImmediate(scnObj);
+                }
+            }
             list.Add(spriteObject);
-
-            PrefabUtility.SaveAsPrefabAsset(obj.gameObject, objPath);
+            
+            PrefabUtility.SaveAsPrefabAsset(clone, objPath);
+            if (Application.isPlaying)
+            {
+                GameObject.Destroy(clone);
+            }
+            else
+            {
+                GameObject.DestroyImmediate(clone);
+            }
         }
     }
 }

@@ -81,7 +81,7 @@ public class GameApp : MonoBehaviour
         }
 
         Vector2 mp = mainCamera.transform.position;
-        sceneManger.UpdateLoading(min + mp, max + mp, ornamentRoot, obstacleRoot);
+        sceneManger.UpdateLoading(min + mp, max + mp, ornamentRoot, obstacleRoot, repeatRoot);
         
         TouchUpdate();
 
@@ -245,6 +245,16 @@ public class GameApp : MonoBehaviour
             obstacleRoot.localScale = Vector3.one;
         }
 
+        if (repeatRoot == null)
+        {
+            GameObject repeatGO = new GameObject("Repeat");
+            repeatRoot = repeatGO.transform;
+            repeatRoot.parent = scnRoot.transform;
+            repeatRoot.localPosition = Vector3.zero;
+            repeatRoot.localRotation = Quaternion.identity;
+            repeatRoot.localScale = Vector3.one;
+        }
+
         sceneManger.Load(scn1.name);
 
         gameLoading = false;
@@ -261,6 +271,7 @@ public class GameApp : MonoBehaviour
         scnRoot = null;
         ornamentRoot = null;
         obstacleRoot = null;
+        repeatRoot = null;
         sceneManger.Unload();
     }
 
@@ -276,6 +287,7 @@ public class GameApp : MonoBehaviour
 
     public static Transform ornamentRoot = null;
     public static Transform obstacleRoot = null;
+    public static Transform repeatRoot = null;
 
     public static Vector2 min = Vector3.zero;
     public static Vector2 max = Vector3.zero;
