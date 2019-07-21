@@ -190,7 +190,7 @@ public class GameApp : MonoBehaviour
         mainCamera.transform.position = Vector3.zero;
 
         // Load Player
-        GameObject spaceShip = Resources.Load<GameObject>("Prefab/spaceship");
+        GameObject spaceShip = Resources.Load<GameObject>("Prefab/space_ship_magnet");
 		spaceShip = GameObject.Instantiate(spaceShip);
 		player = spaceShip.GetComponent<Player>();
 		player.transform.position = new Vector3(-(screenWidth - 2.0f), 0.0f, 1.0f);
