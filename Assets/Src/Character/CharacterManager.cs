@@ -70,6 +70,12 @@ public class CharacterManager
         characters.Remove(id);
     }
 
+    public void Destroy()
+    {
+        characters.Clear();
+        MainPlayer = null;
+    }
+
     public Character MainPlayer
     {
         private set;

@@ -273,6 +273,7 @@ public class GameApp : MonoBehaviour
         obstacleRoot = null;
         repeatRoot = null;
         sceneManger.Unload();
+        CharacterManager.Instance.Destroy();
     }
 
 	public static float screenWidth = 0.0f;
